@@ -202,6 +202,15 @@ LLM 思维链（ReAct）
 python generate_table_embeddings.py
 ```
 
+### 导出表元数据
+
+在将表信息向量化之前，你可以先从数据库导出 `tables_metadata.json`：
+
+```bash
+python export_metadata.py.py
+```
+
+
 ### 运行测试
 ```bash
 python test_react_verify.py
