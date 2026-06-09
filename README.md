@@ -55,8 +55,8 @@
 
 1. 克隆项目
 ```bash
-git clone https://github.com/yourusername/Agent-sql.git
-cd Agent-sql
+git clone https://github.com/xjinjin88/sql_react_agent.git
+cd sql_react_agent
 ```
 
 2. 创建虚拟环境
