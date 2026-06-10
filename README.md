@@ -115,18 +115,20 @@ npm install
 
 ## 🎯 使用
 
-### 启动后端服务
+### 打开一个终端，启动后端服务
 ```bash
 python main.py
 ```
 API 服务将在 `http://localhost:8000` 启动
 
-### 启动前端开发服务器
+### 打开另一个终端，启动前端开发服务器
 ```bash
 cd frontend
 npm run dev
 ```
 前端将在 `http://localhost:5173` 打开
+
+### 你先要运行export_metadata.py文件，得到一个tables_metadata.json文件。这样系统才能检索到数据库里面的表信息。
 
 ### API 文档
 访问 `http://localhost:8000/docs` 查看 OpenAPI 交互式文档
