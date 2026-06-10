@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "tables": {
+    "dbo.class": {
+      "table_name": "class",
+      "schema": "dbo",
+      "qualified_name": "dbo.class",
+      "status": "ok",
+      "ddl": "CREATE TABLE [dbo].[class] (\n  [class_id] INTEGER NOT NULL,\n  [class_name] NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\" NOT NULL,\n  [grade] NVARCHAR(20) COLLATE \"Chinese_PRC_CI_AS\" NOT NULL,\n  PRIMARY KEY ([class_id])\n);",
+      "ddl_source": "inspector",
+      "column_examples": {
+        "class_name": [
+          "高一10班",
+          "高一11班",
+          "高一12班",
+          "高一13班",
+          "高一14班"
+        ],
+        "grade": [
+          "高一"
+        ]
+      },
+      "description": "该表用于存储学校中的班级基础信息，核心业务用途是维护每个班级的唯一标识、名称及所属年级。它最可能与“学生”、“教师”、“课程表”、“成绩单”等核心实体关联，例如通过class_id关联学生所属班级、教师任课班级等。关键筛选与统计字段包括：class_id（班级唯一标识，用于关联查询）、class_name（班级名称，如“高一10班”，可用于按班级筛选）、grade（年级，如“高一”，可用于按年级分组统计或筛选）。",
+      "generated_at": "2026-05-17T13:18:59.958734+00:00"
+    },
+    "dbo.course": {
+      "table_name": "course",
+      "schema": "dbo",
+      "qualified_name": "dbo.course",
+      "status": "ok",
+      "ddl": "CREATE TABLE [dbo].[course] (\n  [course_id] INTEGER NOT NULL,\n  [subject_id] INTEGER NOT NULL,\n  [class_id] INTEGER NOT NULL,\n  [teacher_id] INTEGER NOT NULL,\n  PRIMARY KEY ([course_id]),\n  FOREIGN KEY ([class_id]) REFERENCES [dbo].[class] ([class_id]),\n  FOREIGN KEY ([subject_id]) REFERENCES [dbo].[subject] ([subject_id]),\n  FOREIGN KEY ([teacher_id]) REFERENCES [dbo].[teacher] ([teacher_id])\n);",
+      "ddl_source": "inspector",
+      "description": "这张表是课程核心实体表，用于存储学校或教育机构中每个教学班次的具体课程安排信息。它记录了“哪个老师、在哪个班级、教授哪门学科”这一核心业务关系。该表与班级（class）、学科（subject）和教师（teacher）三个核心实体通过外键直接关联，是教务管理系统的枢纽表。关键筛选与统计字段包括：course_id（课程唯一标识）、subject_id（学科维度，可用于统计各学科开课数量）、class_id（班级维度，可用于分析班级课程负载）、teacher_id（教师维度，可用于统计教师授课量）。通过该表可快速查询特定班级的课程表、某位教师的授课安排，或按学科统计课程分布情况。",
+      "generated_at": "2026-05-17T13:19:03.157588+00:00"
+    },
+    "dbo.score": {
+      "table_name": "score",
+      "schema": "dbo",
+      "qualified_name": "dbo.score",
+      "status": "ok",
+      "ddl": "CREATE TABLE [dbo].[score] (\n  [score_id] INTEGER NOT NULL,\n  [student_id] INTEGER NOT NULL,\n  [course_id] INTEGER NOT NULL,\n  [score] DECIMAL(5, 1) NULL,\n  [exam_type] NVARCHAR(20) COLLATE \"Chinese_PRC_CI_AS\" NULL,\n  [exam_date] DATE NULL,\n  PRIMARY KEY ([score_id]),\n  FOREIGN KEY ([course_id]) REFERENCES [dbo].[course] ([course_id]),\n  FOREIGN KEY ([student_id]) REFERENCES [dbo].[student] ([student_id])\n);",
+      "ddl_source": "inspector",
+      "column_examples": {
+        "exam_type": [
+          "期末考试"
+        ]
+      },
+      "description": "这张表是教育管理系统的核心成绩记录表，用于存储学生在各门课程中的考试成绩数据。它主要关联学生（student）和课程（course）两个核心实体，通过外键student_id和course_id建立关联。关键筛选和统计字段包括：score（具体分数，可用于成绩分布分析）、exam_type（考试类型，如期末考试、期中考试等，可用于按考试类型筛选）、exam_date（考试日期，可用于时间维度分析）。该表支持按学生、课程、考试类型、时间段等多维度查询和统计学生成绩。",
+      "generated_at": "2026-05-17T13:19:05.538576+00:00"
+    },
+    "dbo.student": {
+      "table_name": "student",
+      "schema": "dbo",
+      "qualified_name": "dbo.student",
+      "status": "ok",
+      "ddl": "CREATE TABLE [dbo].[student] (\n  [student_id] INTEGER NOT NULL,\n  [student_name] NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\" NOT NULL,\n  [gender] NVARCHAR(10) COLLATE \"Chinese_PRC_CI_AS\" NULL,\n  [age] INTEGER NULL,\n  [class_id] INTEGER NOT NULL,\n  [create_time] DATETIME NULL,\n  PRIMARY KEY ([student_id]),\n  FOREIGN KEY ([class_id]) REFERENCES [dbo].[class] ([class_id])\n);",
+      "ddl_source": "inspector",
+      "column_examples": {
+        "student_name": [
+          "安常乐天",
+          "安素之",
+          "安文逸",
+          "安语嫣",
+          "奥斯卡"
+        ],
+        "gender": [
+          "男",
+          "女"
+        ]
+      },
+      "description": "这张表是学生信息核心主表，用于存储学校所有在校学生的基本档案数据。它主要与班级实体（通过class_id关联class表）产生强关联，同时可扩展关联成绩、考勤、选课等业务表。关键筛选统计字段包括：student_id（唯一标识）、gender（性别，支持按男女维度统计）、age（年龄，支持年龄分布分析）、class_id（班级，支持按班级分组统计）、create_time（入学时间，支持按时间段筛选）。该表是学校教务管理系统的基础数据源，支撑学生信息查询、班级花名册生成、年龄结构分析等核心业务场景。",
+      "generated_at": "2026-05-17T13:19:08.741054+00:00"
+    },
+    "dbo.subject": {
+      "table_name": "subject",
+      "schema": "dbo",
+      "qualified_name": "dbo.subject",
+      "status": "ok",
+      "ddl": "CREATE TABLE [dbo].[subject] (\n  [subject_id] INTEGER NOT NULL,\n  [subject_name] NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\" NOT NULL,\n  PRIMARY KEY ([subject_id])\n);",
+      "ddl_source": "inspector",
+      "column_examples": {
+        "subject_name": [
+          "化学",
+          "生物",
+          "数学",
+          "物理",
+          "英语"
+        ]
+      },
+      "description": "该表为核心业务中的“科目”实体，用于存储课程或考试科目信息，如化学、生物、数学等。它通常与“学生成绩表”、“课程安排表”或“教师授课表”等实体关联，以标识具体科目。关键筛选字段包括`subject_id`（主键，用于唯一标识科目）和`subject_name`（科目名称，可用于按科目分类统计或筛选）。",
+      "generated_at": "2026-05-17T13:19:10.998006+00:00"
+    },
+    "dbo.teacher": {
+      "table_name": "teacher",
+      "schema": "dbo",
+      "qualified_name": "dbo.teacher",
+      "status": "ok",
+      "ddl": "CREATE TABLE [dbo].[teacher] (\n  [teacher_id] INTEGER NOT NULL,\n  [teacher_name] NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\" NOT NULL,\n  [subject_id] INTEGER NOT NULL,\n  [teacher_phone] NVARCHAR(20) COLLATE \"Chinese_PRC_CI_AS\" NULL,\n  PRIMARY KEY ([teacher_id]),\n  FOREIGN KEY ([subject_id]) REFERENCES [dbo].[subject] ([subject_id])\n);",
+      "ddl_source": "inspector",
+      "column_examples": {
+        "teacher_name": [
+          "白若飞",
+          "蔡文博",
+          "陈思琪",
+          "程婉婷",
+          "崔明宇"
+        ],
+        "teacher_phone": [
+          "138102",
+          "138104",
+          "138129",
+          "138145",
+          "138187"
+        ]
+      },
+      "description": "该表用于存储学校教师的核心信息，是教务管理系统中教师实体的基础数据表。它主要记录每位教师的唯一标识、姓名、联系电话以及所教授的学科。该表与学科表（subject）通过subject_id建立外键关联，以确定教师的教学领域；同时，它还可能与学生选课记录、课程表、班级分配等业务实体产生关联，用于实现排课、师资分配和教学统计。关键筛选和统计字段包括：teacher_id（教师唯一标识，用于精确查询和关联）、subject_id（按学科筛选教师）、teacher_name（按姓名检索）以及teacher_phone（用于联系或通讯录管理）。",
+      "generated_at": "2026-05-17T13:19:14.615579+00:00"
+    }
+  },
+  "database_dialect": "mssql",
+  "database_url": "mssql+pyodbc://x123456/成绩管理?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL",
+  "updated_at": "2026-05-17T13:18:56.365125+00:00"
+}

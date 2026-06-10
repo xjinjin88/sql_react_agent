@@ -1,0 +1,299 @@
+{
+    "class": {
+        "columns": [
+            {
+                "name": "class_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "class_name",
+                "type": "NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "grade",
+                "type": "NVARCHAR(20) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": false,
+                "default": "(N'高一')",
+                "comment": null
+            }
+        ],
+        "primary_keys": [
+            "class_id"
+        ],
+        "foreign_keys": []
+    },
+    "course": {
+        "columns": [
+            {
+                "name": "course_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "subject_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "class_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "teacher_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            }
+        ],
+        "primary_keys": [
+            "course_id"
+        ],
+        "foreign_keys": [
+            {
+                "constrained_columns": [
+                    "class_id"
+                ],
+                "referred_schema": null,
+                "referred_table": "class",
+                "referred_columns": [
+                    "class_id"
+                ]
+            },
+            {
+                "constrained_columns": [
+                    "subject_id"
+                ],
+                "referred_schema": null,
+                "referred_table": "subject",
+                "referred_columns": [
+                    "subject_id"
+                ]
+            },
+            {
+                "constrained_columns": [
+                    "teacher_id"
+                ],
+                "referred_schema": null,
+                "referred_table": "teacher",
+                "referred_columns": [
+                    "teacher_id"
+                ]
+            }
+        ]
+    },
+    "score": {
+        "columns": [
+            {
+                "name": "score_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "student_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "course_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "score",
+                "type": "DECIMAL(5, 1)",
+                "nullable": true,
+                "default": null,
+                "comment": "考试得分"
+            },
+            {
+                "name": "exam_type",
+                "type": "NVARCHAR(20) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": true,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "exam_date",
+                "type": "DATE",
+                "nullable": true,
+                "default": null,
+                "comment": "考试举办的具体日期"
+            }
+        ],
+        "primary_keys": [
+            "score_id"
+        ],
+        "foreign_keys": [
+            {
+                "constrained_columns": [
+                    "course_id"
+                ],
+                "referred_schema": null,
+                "referred_table": "course",
+                "referred_columns": [
+                    "course_id"
+                ]
+            },
+            {
+                "constrained_columns": [
+                    "student_id"
+                ],
+                "referred_schema": null,
+                "referred_table": "student",
+                "referred_columns": [
+                    "student_id"
+                ]
+            }
+        ]
+    },
+    "student": {
+        "columns": [
+            {
+                "name": "student_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "student_name",
+                "type": "NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "gender",
+                "type": "NVARCHAR(10) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": true,
+                "default": "(N'未知')",
+                "comment": null
+            },
+            {
+                "name": "age",
+                "type": "INTEGER",
+                "nullable": true,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "class_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "create_time",
+                "type": "DATETIME",
+                "nullable": true,
+                "default": "(getdate())",
+                "comment": null
+            }
+        ],
+        "primary_keys": [
+            "student_id"
+        ],
+        "foreign_keys": [
+            {
+                "constrained_columns": [
+                    "class_id"
+                ],
+                "referred_schema": null,
+                "referred_table": "class",
+                "referred_columns": [
+                    "class_id"
+                ]
+            }
+        ]
+    },
+    "subject": {
+        "columns": [
+            {
+                "name": "subject_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": "学科ID,主键"
+            },
+            {
+                "name": "subject_name",
+                "type": "NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": false,
+                "default": null,
+                "comment": "学科名字"
+            }
+        ],
+        "primary_keys": [
+            "subject_id"
+        ],
+        "foreign_keys": []
+    },
+    "teacher": {
+        "columns": [
+            {
+                "name": "teacher_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": "教师工号，主键"
+            },
+            {
+                "name": "teacher_name",
+                "type": "NVARCHAR(30) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": false,
+                "default": null,
+                "comment": null
+            },
+            {
+                "name": "subject_id",
+                "type": "INTEGER",
+                "nullable": false,
+                "default": null,
+                "comment": "所属学科ID，关联学科表,数字代表学科号"
+            },
+            {
+                "name": "teacher_phone",
+                "type": "NVARCHAR(20) COLLATE \"Chinese_PRC_CI_AS\"",
+                "nullable": true,
+                "default": null,
+                "comment": "教师联系电话"
+            }
+        ],
+        "primary_keys": [
+            "teacher_id"
+        ],
+        "foreign_keys": [
+            {
+                "constrained_columns": [
+                    "subject_id"
+                ],
+                "referred_schema": null,
+                "referred_table": "subject",
+                "referred_columns": [
+                    "subject_id"
+                ]
+            }
+        ]
+    }
+}
